@@ -15,8 +15,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_22_180308) do
   enable_extension "plpgsql"
 
   create_table "post_tags", force: :cascade do |t|
+    t.bigint "post_id", null: false
+    t.bigint "tag_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_post_tags_on_post_id"
+    t.index ["tag_id"], name: "index_post_tags_on_tag_id"
   end
 
   create_table "posts", force: :cascade do |t|
@@ -47,5 +51,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_22_180308) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "post_tags", "posts"
+  add_foreign_key "post_tags", "table_tags", column: "tag_id"
   add_foreign_key "posts", "posts", column: "parent_post_id"
 end
